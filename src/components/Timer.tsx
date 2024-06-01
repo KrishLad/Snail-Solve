@@ -15,7 +15,7 @@ const Timer = ({initalTime}: Prop) => {
         }
     }, [time]);
     return (
-        <div className = "timer">
+        <div className = "timer-content">
             <h1>
                 {time}s
             </h1>
