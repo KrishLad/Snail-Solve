@@ -1,0 +1,21 @@
+body{
+  background-color: #262727;
+  /* You can use any color code you like */
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #f0d3c9;
+}
+h1{
+  font-family: Reddit-Mono;
+}
+.timer{
+  display: flex;
+  justify-content: center;
+  padding: 4rem;
+  height: 100vh;
+}
+
+@font-face {
+  font-family: Reddit-Mono;
+  src: url(../public/RedditMono-Regular.ttf);
+}
