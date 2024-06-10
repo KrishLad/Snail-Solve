@@ -1,3 +1,25 @@
 .game-content{
     font-size: 3em;
+    font-family: Reddit-Mono;
+}
+
+.timer-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    padding: 3rem;
+    width: fit-content;
+    /* Ensure the width fits the content */
+    height: fit-content;
+}
+
+@font-face {
+    font-family: Reddit-Mono;
+    src: url(../public/RedditMono-Regular.ttf);
 }

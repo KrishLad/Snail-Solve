@@ -1,13 +1,15 @@
-interface Props{
-    num1: number;
-    num2: number;
-    operation: string;
+interface Props {
+  num1: number;
+  num2: number;
+  operation: string;
 }
-
-const Problem = ({ num1, num2, operation }: Props) => {
+const Problem = ({ num1, num2, operation}: Props) => {
   return (
-    <div className="problem">
-      {num1} {operation} {num2}
+    <div style={{ fontFamily: "monospace", textAlign: "right", width: "50px" }} className="problem">
+      <div className="first-number">{num1}</div>
+      <div className="operation">{operation}</div>
+      <div className= "second-number"> {num2}</div>
+      <hr style={{ width: "200px", border:"3px solid", borderRadius: "10px"}} />
     </div>
   );
 };
