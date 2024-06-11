@@ -1,3 +1,4 @@
+import './Problem.css'
 interface Props {
   num1: number;
   num2: number;
