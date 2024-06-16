@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import './Timer.css'
-interface Prop{
-    initalTime: number;
-}
-const Timer = ({initalTime}: Prop) => {
+const Timer = (initalTime: number) => {
     const [time, setTime] = useState(initalTime);
     useEffect( () => {
         if (time  > 0){
@@ -14,13 +11,15 @@ const Timer = ({initalTime}: Prop) => {
             return () => clearInterval(timer);
         }
     }, [time]);
-    return (
+    return {
+        time,
+        render:(
         <div className = "timer-content">
             <h1>
                 {time}s
             </h1>
         </div>
-  );
+  )};
 }
 
 export default Timer
