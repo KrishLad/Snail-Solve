@@ -1,12 +1,12 @@
-.game-content{
+.game-content {
     font-size: 5em;
     font-family: Reddit-Mono;
     position: absolute;
     top: 50%;
-    left: 54%;
+    left: 60%;
     transform: translate(-200%, -50%);
     padding: 10px;
-    
+
 }
 
 .timer-box {
@@ -24,6 +24,7 @@
     /* Ensure the width fits the content */
     height: fit-content;
 }
+
 .input {
     position: relative;
     font-family: Reddit-Mono;
@@ -32,13 +33,15 @@
     color: white;
     bottom: 30px;
     font-size: 70px;
-    width: 90px;
-    left:105px;
+    width: 160px;
+    left: 105px;
 }
 
 input[type="in"]:focus {
     outline: none;
 }
+
+
 
 @font-face {
     font-family: Reddit-Mono;

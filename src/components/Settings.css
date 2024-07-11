@@ -1,0 +1,88 @@
+
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh;
+    background-color: #222;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+.digit-settings,
+.timer-settings,
+.operation-settings {
+    background-color: #343231;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: white;
+}
+
+.digit-settings button,
+.timer-settings button,
+.operation-settings button {
+    margin: 0 5px;
+}
+
+.timer-settings {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.operation-settings {
+    display: flex;
+    justify-content: center;
+    margin-left: 10px;
+}
+
+.digit-settings{
+    margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .digit-settings,
+    .timer-settings,
+    .operation-settings {
+        margin-bottom: 20px;
+    }
+}
+
+
+
+.btn {
+    background: transparent;
+    color: #665957;
+    border: 0;
+    box-shadow: none;
+    font-family: Reddit-Mono;
+    padding: 0 10px 0 10px;
+    font-size: 1.5rem;
+}
+
+.btn.selected{
+    color: #f0d3c9;
+    transition: all 0.2s;
+}
+
+
+@font-face {
+    font-family: Reddit-Mono;
+    src: url(../public/RedditMono-Regular.ttf);
+}
