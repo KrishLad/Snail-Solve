@@ -2,17 +2,22 @@ import { useState, useEffect } from "react";
 import './Timer.css'
 const Timer = (initalTime: number) => {
     const [time, setTime] = useState(initalTime);
+    const [timerOn, setTimerOn] = useState(false);
     useEffect( () => {
-        if (time  > 0){
-            const timer = setInterval(() => {
-                setTime(prevTime => prevTime-1 );
-            }, 1000);
+        if (timerOn){
+             if (time >= 0) {
+               const timer = setInterval(() => {
+                 setTime((prevTime) => prevTime - 1);
+               }, 1000);
 
-            return () => clearInterval(timer);
+               return () => clearInterval(timer);
+             }
         }
-    }, [time]);
+       
+    }, [time, timerOn]);
     return {
         time,
+        setTimerOn,
         render:(
         <div className = "timer-content">
             <h1>

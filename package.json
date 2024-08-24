@@ -11,10 +11,15 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.3",
+    "jquery": "^3.7.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
+    "@rollup/plugin-inject": "^5.0.5",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",

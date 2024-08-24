@@ -41,7 +41,16 @@ input[type="in"]:focus {
     outline: none;
 }
 
-
+.end-game-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 @font-face {
     font-family: Reddit-Mono;
