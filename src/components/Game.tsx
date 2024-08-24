@@ -36,6 +36,8 @@ function calculate(N1:number, N2: number, operation:string){
 
 
 
+
+
 function clearInput(){
   document.getElementById('answerBox').value = ""; //it will not be null.
 }
@@ -53,7 +55,7 @@ const Game = () => {
   const [showEndGame, setShowEndGame] = useState(false);
 
   const { selectedDigit, selectedTimer, selectedOperation, settingsRender } = Settings();
-  const {time, setTimerOn, render}  = Timer(selectedDigit); //I was very sleep when i named this
+  const {time,setTime,setTimerOn, render}  = Timer(selectedDigit); //I was very sleep when i named this
   const [solvesperMinute, setSolvesPerMinute] = useState(0);
   const [solveTimes, setSolveTimes] = useState([]);
 
@@ -115,6 +117,7 @@ const Game = () => {
   //Game end.
  useEffect(() => {
    if (time < 0) {
+     setGameStarted(false);
      setTimerStarted(false);
      setShowEndGame(true);
      document.getElementById("game").style.display = "none";
@@ -148,7 +151,7 @@ const Game = () => {
         <p>Your Score: {score}</p>
         <p>Solves per Minute: {solvesperMinute}</p>
         <LineChart
-          width={600}
+          width={900}
           height={300}
           data={data}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -157,14 +160,14 @@ const Game = () => {
           <XAxis
             dataKey="problem"
             label={{
-              value: "Problem Number",
+              value: "Solves",
               position: "insideBottomRight",
               offset: -10,
             }}
           />
           <YAxis
             label={{
-              value: "Time (seconds)",
+              value: "Time(s)",
               angle: -90,
               position: "insideLeft",
             }}
@@ -177,8 +180,11 @@ const Game = () => {
     );
   }
 
+
+
   return (
     <>
+      <img className="logo" src="public/CgMvp701.svg" alt="logo"/>
       <div />
       {settingsDisplayed && settingsRender}
       <div />
@@ -203,7 +209,14 @@ const Game = () => {
           maxLength={2} //value is modified
         />
       </div>
-      {showEndGame && <EndGameDisplay score={score} solveTimes={solveTimes}/>}
+      {showEndGame && <EndGameDisplay score={score} solveTimes={solveTimes} />}
+      {showEndGame && <button className="restart-button" onClick={() => {
+        setShowEndGame(false);
+        setSettingsDisplayed(true);       
+        document.getElementById("game").style.display = "initial";
+        setTimerOn(false);
+        setTime(selectedDigit);
+      }}>⟳</button>}
     </>
   );
 }

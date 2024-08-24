@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./Settings.css";
 
 function Settings() {
-  const [selectedDigit, setSelectedDigit] = useState(5);
+  const [selectedDigit, setSelectedDigit] = useState(10);
   const [selectedTimer, setSelectedTimer] = useState("Single");
   const [selectedOperation, setSelectedOperation] = useState("+");
 
@@ -22,65 +22,70 @@ function Settings() {
     selectedDigit,
     selectedTimer,
     selectedOperation,
-    settingsRender: (<>
-      <div className="container">
-        <div className="digit-settings">
-          <button
-            className={`btn ${selectedDigit === 5 ? "selected" : ""}`}
-            onClick={() => handleDigitClick(5)}
-          >
-            5
-          </button>
-          <button
-            className={`btn ${selectedDigit === 10 ? "selected" : ""}`}
-            onClick={() => handleDigitClick(10)}
-          >
-            10
-          </button>
-          <button
-            className={`btn ${selectedDigit === 15 ? "selected" : ""}`}
-            onClick={() => handleDigitClick(15)}
-          >
-            15
-          </button>
+    settingsRender: (
+      <>
+        <div className="container">
+          <div className="digit-settings">
+            <p className="title">Time | </p>
+            <button
+              className={`btn ${selectedDigit === 10 ? "selected" : ""}`}
+              onClick={() => handleDigitClick(10)}
+            >
+              10
+            </button>
+            <button
+              className={`btn ${selectedDigit === 30 ? "selected" : ""}`}
+              onClick={() => handleDigitClick(30)}
+            >
+              30
+            </button>
+            <button
+              className={`btn ${selectedDigit === 60 ? "selected" : ""}`}
+              onClick={() => handleDigitClick(60)}
+            >
+              60
+            </button>
+          </div>
+          <div className="timer-settings">
+            <p className="title">Digits | </p>
+            <button
+              className={`btn ${selectedTimer === "Single" ? "selected" : ""}`}
+              onClick={() => handleTimerClick("Single")}
+            >
+              Single
+            </button>
+            <button
+              className={`btn ${selectedTimer === "Double" ? "selected" : ""}`}
+              onClick={() => handleTimerClick("Double")}
+            >
+              Double
+            </button>
+            <button
+              className={`btn ${selectedTimer === "Triple" ? "selected" : ""}`}
+              onClick={() => handleTimerClick("Triple")}
+            >
+              Triple
+            </button>
+          </div>
+          <div className="operation-settings">
+            <p className="title">Operation | </p>
+            <button
+              className={`btn ${selectedOperation === "+" ? "selected" : ""}`}
+              onClick={() => handleOperationClick("+")}
+            >
+              +
+            </button>
+            <button
+              className={`btn ${selectedOperation === "x" ? "selected" : ""}`}
+              onClick={() => handleOperationClick("x")}
+            >
+              x
+            </button>
+          </div>
         </div>
-        <div className="timer-settings">
-          <button
-            className={`btn ${selectedTimer === "Single" ? "selected" : ""}`}
-            onClick={() => handleTimerClick("Single")}
-          >
-            Single
-          </button>
-          <button
-            className={`btn ${selectedTimer === "Double" ? "selected" : ""}`}
-            onClick={() => handleTimerClick("Double")}
-          >
-            Double
-          </button>
-          <button
-            className={`btn ${selectedTimer === "Triple" ? "selected" : ""}`}
-            onClick={() => handleTimerClick("Triple")}
-          >
-            Triple
-          </button>
-        </div>
-        <div className="operation-settings">
-          <button
-            className={`btn ${selectedOperation === "+" ? "selected" : ""}`}
-            onClick={() => handleOperationClick("+")}
-          >
-            +
-          </button>
-          <button
-            className={`btn ${selectedOperation === "x" ? "selected" : ""}`}
-            onClick={() => handleOperationClick("x")}
-          >
-            x
-          </button>
-        </div>
-      </div>
-    </>
-    )};
+      </>
+    ),
+  };
 }
 
 export default Settings;

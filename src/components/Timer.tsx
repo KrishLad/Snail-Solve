@@ -17,6 +17,7 @@ const Timer = (initalTime: number) => {
     }, [time, timerOn]);
     return {
         time,
+        setTime,
         setTimerOn,
         render:(
         <div className = "timer-content">

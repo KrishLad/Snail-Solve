@@ -81,6 +81,10 @@ body {
     transition: all 0.2s;
 }
 
+.title{
+    font-family: Reddit-Mono;
+    color:#f0d3c9;
+}
 
 @font-face {
     font-family: Reddit-Mono;

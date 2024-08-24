@@ -42,6 +42,7 @@ input[type="in"]:focus {
 }
 
 .end-game-display {
+    font-family: Reddit-Mono;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -50,6 +51,25 @@ input[type="in"]:focus {
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    font-size: 1.5rem;
+}
+.restart-button{
+    font-family: Reddit-Mono;
+    position: absolute;
+    bottom: 40%;
+    left: 52%;
+    height: 50px;
+    width: 50px;
+    font-size: 200%;
+    color: #f0d3c9;
+    background-color: #262727;
+    box-shadow: none;
+    border: 0;
+}
+.logo{
+    position: absolute;
+    left: 0;
+    top:0;
 }
 
 @font-face {
