@@ -3,8 +3,8 @@ body {
     margin: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 30vh;
+    align-items: flex-start;
+    min-height: 100vh;
     background-color: #222;
 }
 
@@ -15,6 +15,7 @@ body {
     width: 100%;
     max-width: 1200px;
     padding: 0 20px;
+    margin-top: 10vh;
 }
 
 .digit-settings,
@@ -88,5 +89,5 @@ body {
 
 @font-face {
     font-family: Reddit-Mono;
-    src: url(../public/RedditMono-Regular.ttf);
+    src: url(/RedditMono-Regular.ttf);
 }

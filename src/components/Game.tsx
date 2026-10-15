@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import './Game.css'
 import Problem from "./Problem";
-import Timer from "./Timer";
-import Settings from "./Settings";
+import useTimer from "./Timer";
+import useSettings from "./Settings";
 import {
   LineChart,
   Line,
@@ -11,214 +11,167 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 
-
-function getRandomInt(max:number){
+function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
 }
 
-function isValidInput(value: string) {
- return /^\d+(\.\d+)?$/.test(value);
+function numberLimit(digits: string) {
+  return digits === "Triple" ? 1000 : digits === "Double" ? 100 : 10;
 }
 
-function calculate(N1:number, N2: number, operation:string){
-  switch (operation) {
-    case "+":
-      return N1 + N2;
-    case "×":
-      return N1 * N2;
-    default:
-      break;
-  }
+function calculate(N1: number, N2: number, operation: string) {
+  return operation === "x" ? N1 * N2 : N1 + N2;
 }
 
-
-
-
-
-
-function clearInput(){
-  document.getElementById('answerBox').value = ""; //it will not be null.
+interface EndGameDisplayProps {
+  score: number;
+  duration: number;
+  solveTimes: number[];
 }
 
+const EndGameDisplay = ({ score, duration, solveTimes }: EndGameDisplayProps) => {
+  const data = solveTimes.map((time, index) => ({
+    problem: index + 1,
+    time,
+  }));
+  const solvesPerMinute = (score * 60 / duration).toFixed(2);
+
+  return (
+    <div className="end-game-display">
+      <h2>Game Over!</h2>
+      <p>Your Score: {score}</p>
+      <p>Solves per Minute: {solvesPerMinute}</p>
+      {solveTimes.length === 0 && <p>No solves recorded.</p>}
+      {solveTimes.length === 1 && <p>Solve time: {solveTimes[0].toFixed(2)}s</p>}
+      {solveTimes.length > 1 && (
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart
+            data={data}
+            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="problem"
+              label={{ value: "Solves", position: "insideBottomRight", offset: -10 }}
+            />
+            <YAxis width={65} domain={[0, (maximum: number) => Math.max(1, Math.ceil(maximum))]} allowDecimals={false} />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="time" name="Solve time (s)" stroke="#8884d8" dot={{ r: 4 }} />
+          </LineChart>
+        </ResponsiveContainer>
+      )}
+    </div>
+  );
+};
 
 const Game = () => {
-  const [N1, setN1] = useState(getRandomInt(10));
-  const [N2, setN2] = useState(getRandomInt(10));
-  const [operation, setOperation] = useState('+');
+  const [N1, setN1] = useState(() => getRandomInt(10));
+  const [N2, setN2] = useState(() => getRandomInt(10));
   const [answer, setAnswer] = useState("");
-  const [timerStarted, setTimerStarted] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [score, setScore] = useState(0);
-  const [settingsDisplayed, setSettingsDisplayed] = useState(true);
   const [showEndGame, setShowEndGame] = useState(false);
+  const [solveTimes, setSolveTimes] = useState<number[]>([]);
+  const lastSolveAt = useRef<number | null>(null);
 
-  const { selectedDigit, selectedTimer, selectedOperation, settingsRender } = Settings();
-  const {time,setTime,setTimerOn, render}  = Timer(selectedDigit); //I was very sleep when i named this
-  const [solvesperMinute, setSolvesPerMinute] = useState(0);
-  const [solveTimes, setSolveTimes] = useState([]);
+  const { selectedDuration, selectedDigits, selectedOperation, settingsRender } = useSettings();
+  const { time, setTime, setTimerOn, render } = useTimer(selectedDuration);
+  const limit = numberLimit(selectedDigits);
+  const largestOperand = limit - 1;
+  const maxAnswerLength = String(selectedOperation === "x"
+    ? largestOperand * largestOperand
+    : largestOperand * 2).length;
 
- 
-
-  //Random number generator 
   useEffect(() => {
-    switch (selectedTimer) {
-      case "Single":
-        setN1(getRandomInt(10));
-        setN2(getRandomInt(10));
-        document.getElementById('answerBox').placeholder = "00";
-        document.getElementById("answerBox").maxLength = 2;
-        break;
-      case "Double":
-        setN1(getRandomInt(100));
-        setN2(getRandomInt(100));
-        document.getElementById("answerBox").placeholder = "000";
-        document.getElementById("answerBox").maxLength = 3;
-        break;
-      case "Triple":
-        setN1(getRandomInt(1000));
-        setN2(getRandomInt(1000));
-        document.getElementById("answerBox").placeholder = "0000";
-        document.getElementById("answerBox").maxLength = 4;
-        break;
-      default:
-        break;
+    setN1(getRandomInt(numberLimit(selectedDigits)));
+    setN2(getRandomInt(numberLimit(selectedDigits)));
+    setAnswer("");
+  }, [selectedDigits, selectedOperation]);
+
+  useEffect(() => {
+    if (gameStarted && time === 0) {
+      setTimerOn(false);
+      setGameStarted(false);
+      setShowEndGame(true);
+      setAnswer("");
     }
-  }, [selectedTimer]);
-  const startTimer = () => {
-    if(!timerStarted){
-      setTimerStarted(true);
-    }
-  } 
-  
+  }, [gameStarted, time, setTimerOn]);
 
-  // Game loop 
-   useEffect(() => {
-     if (answer && !gameStarted) {
-       setGameStarted(true);
-       startTimer();
-       setTimerOn(true);
-       setSettingsDisplayed(false);
-     } else if (answer) {
-       if (parseInt(answer) === calculate(N1, N2, operation)) {
-         setScore(score + 1);
-         setN1(getRandomInt(10));
-         setN2(getRandomInt(10));
-         clearInput();
-
-         //Record the time taken for this solve
-         const solveTime = selectedDigit - time;
-         setSolveTimes(prevTimes => [...prevTimes, solveTime]); 
-       }
-     } 
-   }, [answer, gameStarted, time]);
-
-  //Game end.
- useEffect(() => {
-   if (time < 0) {
-     setGameStarted(false);
-     setTimerStarted(false);
-     setShowEndGame(true);
-     document.getElementById("game").style.display = "none";
-
-
-     const minutesPlayed = selectedDigit/ 60;
-     const spm = (score / minutesPlayed).toFixed(2);
-     setSolvesPerMinute(parseFloat(spm));
-   }
- }, [time]);
-  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAnswer(e.target.value);
-    
+    const value = e.target.value;
+    if (time === 0 || !/^\d*$/.test(value) || value.length > maxAnswerLength) return;
+
+    if (value && !gameStarted) {
+      setGameStarted(true);
+      setTimerOn(true);
+      lastSolveAt.current = performance.now();
+    }
+
+    if (value && Number(value) === calculate(N1, N2, selectedOperation)) {
+      const now = performance.now();
+      const solveTime = (now - (lastSolveAt.current ?? now)) / 1000;
+      setSolveTimes(previous => [...previous, Number(solveTime.toFixed(2))]);
+      lastSolveAt.current = now;
+      setScore(previous => previous + 1);
+      setN1(getRandomInt(limit));
+      setN2(getRandomInt(limit));
+      setAnswer("");
+    } else {
+      setAnswer(value);
+    }
   };
 
-
-  //Display this at the end game
-  const EndGameDisplay = ({score, solveTimes}) => {
-    const data = solveTimes.map((time, index) => ({
-      problem: index+1,
-      time: time
-    }));
-
-    const averageSolveTime = solveTimes.reduce((a,b) => a+b, 0);
-    const solvesperMinute = (60/ averageSolveTime).toFixed(2);
-
-    return (
-      <div className="end-game-display">
-        <h2>Game Over!</h2>
-        <p>Your Score: {score}</p>
-        <p>Solves per Minute: {solvesperMinute}</p>
-        <LineChart
-          width={900}
-          height={300}
-          data={data}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="problem"
-            label={{
-              value: "Solves",
-              position: "insideBottomRight",
-              offset: -10,
-            }}
-          />
-          <YAxis
-            label={{
-              value: "Time(s)",
-              angle: -90,
-              position: "insideLeft",
-            }}
-          />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="time" stroke="#8884d8" />
-        </LineChart>
-      </div>
-    );
-  }
-
-
+  const restartGame = () => {
+    setTimerOn(false);
+    setTime(selectedDuration);
+    setGameStarted(false);
+    setShowEndGame(false);
+    setScore(0);
+    setSolveTimes([]);
+    setAnswer("");
+    lastSolveAt.current = null;
+    setN1(getRandomInt(limit));
+    setN2(getRandomInt(limit));
+  };
 
   return (
     <>
-      <img className="logo" src="public/CgMvp701.svg" alt="logo"/>
-      <div />
-      {settingsDisplayed && settingsRender}
-      <div />
-      <div className="timer-box">
-        <div className="timer">{timerStarted && render}</div>
-      </div>
-      <div className="game-content" id="game">
-        <div className="problem">
-          <Problem num1={N1} num2={N2} operation={selectedOperation} />
+      <img className="logo" src="/CgMvp701.svg" alt="logo" />
+      {!gameStarted && !showEndGame && settingsRender}
+      {gameStarted && (
+        <div className="timer-box">
+          <div className="timer">{render}</div>
         </div>
-        <input
-          type="in"
-          id="answerBox"
-          className="input"
-          placeholder="000"
-          onChange={handleInputChange}
-          onKeyDown={(e) => {
-            if (!(e.code === "Backspace" || isValidInput(e.key))) {
-              e.preventDefault();
-            }
-          }}
-          maxLength={2} //value is modified
-        />
-      </div>
-      {showEndGame && <EndGameDisplay score={score} solveTimes={solveTimes} />}
-      {showEndGame && <button className="restart-button" onClick={() => {
-        setShowEndGame(false);
-        setSettingsDisplayed(true);       
-        document.getElementById("game").style.display = "initial";
-        setTimerOn(false);
-        setTime(selectedDigit);
-      }}>⟳</button>}
+      )}
+      {!showEndGame && (
+        <div className="game-content" id="game">
+          <div className="problem">
+            <Problem num1={N1} num2={N2} operation={selectedOperation} />
+          </div>
+          <input
+            type="text"
+            inputMode="numeric"
+            id="answerBox"
+            className="input"
+            placeholder={"0".repeat(maxAnswerLength)}
+            value={answer}
+            onChange={handleInputChange}
+            maxLength={maxAnswerLength}
+          />
+        </div>
+      )}
+      {showEndGame && (
+        <div className="end-screen">
+          <EndGameDisplay score={score} duration={selectedDuration} solveTimes={solveTimes} />
+          <button className="restart-button" onClick={restartGame} aria-label="Play again">⟳</button>
+        </div>
+      )}
     </>
   );
-}
+};
 
-export default Game
+export default Game;

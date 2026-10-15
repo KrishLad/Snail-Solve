@@ -16,5 +16,5 @@ h1{
 }
 @font-face {
   font-family: Reddit-Mono;
-  src: url(../public/RedditMono-Regular.ttf);
+  src: url(/RedditMono-Regular.ttf);
 }

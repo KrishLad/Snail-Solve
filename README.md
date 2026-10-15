@@ -27,17 +27,16 @@ git clone https://github.com/KrishLad/Snail-Solve
 cd Snail-Solve
 ```
 
-3. Install depndencies:
-This project has a single dependency that being recharts, the installation is as follows,
+3. Install dependencies:
 ```bash
-npm install recharts
+npm ci
 ```
 
 4. Start the local server
 ```bash
-npm start
+npm run dev
 ```
-5. Open your browser and visit `http://localhost:3000` to play the game.
+5. Open the URL printed by Vite (usually `http://localhost:5173`) to play the game.
 
 ## How to Play
 
@@ -46,7 +45,7 @@ npm start
 - Choose the operation type (addition or multiplication)
 - Set the game duration
 
-2. Solve the first question to start playing
+2. Start typing an answer to begin the timer.
 
 3. Solve as many math problems as you can before the timer runs out.
 
@@ -59,11 +58,10 @@ npm start
 
 ## Project Structure
 
-- `Game.tsx`: Main game component
+- `Game.tsx`: Main game component, end-game statistics, and solve-time graph
 - `Problem.tsx`: Renders individual math problems
 - `Timer.tsx`: Handles the game timer
 - `Settings.tsx`: Manages game settings
-- `EndGameDisplay.tsx`: Displays end-game statistics and graph
 
 ## Future Enhancements
 

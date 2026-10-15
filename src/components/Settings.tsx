@@ -1,17 +1,17 @@
 import { useState } from "react";
 import "./Settings.css";
 
-function Settings() {
-  const [selectedDigit, setSelectedDigit] = useState(10);
-  const [selectedTimer, setSelectedTimer] = useState("Single");
+function useSettings() {
+  const [selectedDuration, setSelectedDuration] = useState(10);
+  const [selectedDigits, setSelectedDigits] = useState("Single");
   const [selectedOperation, setSelectedOperation] = useState("+");
 
-  const handleDigitClick = (value: number) => {
-    setSelectedDigit(value);
+  const handleDurationClick = (value: number) => {
+    setSelectedDuration(value);
   };
 
-  const handleTimerClick = (value: string) => {
-    setSelectedTimer(value);
+  const handleDigitsClick = (value: string) => {
+    setSelectedDigits(value);
   };
 
   const handleOperationClick = (value: string) => {
@@ -19,8 +19,8 @@ function Settings() {
   };
 
   return {
-    selectedDigit,
-    selectedTimer,
+    selectedDuration,
+    selectedDigits,
     selectedOperation,
     settingsRender: (
       <>
@@ -28,20 +28,20 @@ function Settings() {
           <div className="digit-settings">
             <p className="title">Time | </p>
             <button
-              className={`btn ${selectedDigit === 10 ? "selected" : ""}`}
-              onClick={() => handleDigitClick(10)}
+              className={`btn ${selectedDuration === 10 ? "selected" : ""}`}
+              onClick={() => handleDurationClick(10)}
             >
               10
             </button>
             <button
-              className={`btn ${selectedDigit === 30 ? "selected" : ""}`}
-              onClick={() => handleDigitClick(30)}
+              className={`btn ${selectedDuration === 30 ? "selected" : ""}`}
+              onClick={() => handleDurationClick(30)}
             >
               30
             </button>
             <button
-              className={`btn ${selectedDigit === 60 ? "selected" : ""}`}
-              onClick={() => handleDigitClick(60)}
+              className={`btn ${selectedDuration === 60 ? "selected" : ""}`}
+              onClick={() => handleDurationClick(60)}
             >
               60
             </button>
@@ -49,20 +49,20 @@ function Settings() {
           <div className="timer-settings">
             <p className="title">Digits | </p>
             <button
-              className={`btn ${selectedTimer === "Single" ? "selected" : ""}`}
-              onClick={() => handleTimerClick("Single")}
+              className={`btn ${selectedDigits === "Single" ? "selected" : ""}`}
+              onClick={() => handleDigitsClick("Single")}
             >
               Single
             </button>
             <button
-              className={`btn ${selectedTimer === "Double" ? "selected" : ""}`}
-              onClick={() => handleTimerClick("Double")}
+              className={`btn ${selectedDigits === "Double" ? "selected" : ""}`}
+              onClick={() => handleDigitsClick("Double")}
             >
               Double
             </button>
             <button
-              className={`btn ${selectedTimer === "Triple" ? "selected" : ""}`}
-              onClick={() => handleTimerClick("Triple")}
+              className={`btn ${selectedDigits === "Triple" ? "selected" : ""}`}
+              onClick={() => handleDigitsClick("Triple")}
             >
               Triple
             </button>
@@ -88,4 +88,4 @@ function Settings() {
   };
 }
 
-export default Settings;
+export default useSettings;
