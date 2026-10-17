@@ -1,31 +1,34 @@
 import { useState, useEffect } from "react";
 import './Timer.css'
-const Timer = (initalTime: number) => {
-    const [time, setTime] = useState(initalTime);
-    const [timerOn, setTimerOn] = useState(false);
-    useEffect( () => {
-        if (timerOn){
-             if (time >= 0) {
-               const timer = setInterval(() => {
-                 setTime((prevTime) => prevTime - 1);
-               }, 1000);
 
-               return () => clearInterval(timer);
-             }
-        }
-       
-    }, [time, timerOn]);
-    return {
-        time,
-        setTime,
-        setTimerOn,
-        render:(
-        <div className = "timer-content">
-            <h1>
-                {time}s
-            </h1>
-        </div>
-  )};
-}
+const useTimer = (initialTime: number) => {
+  const [time, setTime] = useState(initialTime);
+  const [timerOn, setTimerOn] = useState(false);
 
-export default Timer
+  useEffect(() => {
+    setTime(initialTime);
+  }, [initialTime]);
+
+  useEffect(() => {
+    if (!timerOn) return;
+
+    const timer = window.setInterval(() => {
+      setTime(previous => Math.max(0, previous - 1));
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [timerOn]);
+
+  return {
+    time,
+    setTime,
+    setTimerOn,
+    render: (
+      <div className="timer-content">
+        <h1>{time}s</h1>
+      </div>
+    ),
+  };
+};
+
+export default useTimer;

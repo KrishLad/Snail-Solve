@@ -37,7 +37,7 @@
     left: 105px;
 }
 
-input[type="in"]:focus {
+.input:focus {
     outline: none;
 }
 
@@ -47,17 +47,22 @@ input[type="in"]:focus {
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
-    width: 100%;
-    max-width: 600px;
+    width: calc(100vw - 40px);
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
     font-size: 1.5rem;
 }
+.end-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
 .restart-button{
     font-family: Reddit-Mono;
-    position: absolute;
-    bottom: 40%;
-    left: 52%;
+    margin-top: 20px;
     height: 50px;
     width: 50px;
     font-size: 200%;
@@ -74,5 +79,5 @@ input[type="in"]:focus {
 
 @font-face {
     font-family: Reddit-Mono;
-    src: url(../public/RedditMono-Regular.ttf);
+    src: url(/RedditMono-Regular.ttf);
 }
